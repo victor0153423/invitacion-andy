@@ -1,8 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Generar invitación personalizada
     document.getElementById("generar-invitacion").addEventListener("click", () => {
-        const adultos = document.getElementById("adultos").value;
-        const ninos = document.getElementById("ninos").value;
+        // Obtener valores, usando 0 si el campo está vacío
+        const adultos = document.getElementById("adultos").value || 0;
+        const ninos = document.getElementById("ninos").value || 0;
+        
+        // Validar que al menos haya un pase
+        if (adultos == 0 && ninos == 0) {
+            alert("Por favor, ingresa al menos un pase (adulto o niño)");
+            return;
+        }
+        
         const invitacionId = 'inv-' + Math.random().toString(36).substr(2, 8);
         
         localStorage.setItem(`invitacion_${invitacionId}`, JSON.stringify({
@@ -17,8 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         linkElement.textContent = "Enlace de invitación personalizado";
         document.getElementById("invitacion-link").style.display = 'block';
         
-        navigator.clipboard.writeText(link);
-        alert("Enlace copiado al portapeles");
+        navigator.clipboard.writeText(link).then(() => {
+            alert("Enlace copiado al portapeles");
+        }).catch(err => {
+            console.error("Error al copiar: ", err);
+        });
     });
 
     // Cargar datos si hay invitación compartida
@@ -26,8 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (params.has('inv')) {
         const data = JSON.parse(localStorage.getItem(`invitacion_${params.get('inv')}`));
         if (data) {
-            document.getElementById("adultos").value = data.adultos;
-            document.getElementById("ninos").value = data.ninos;
+            document.getElementById("adultos").value = data.adultos || '';
+            document.getElementById("ninos").value = data.ninos || '';
             document.getElementById("adultos").disabled = true;
             document.getElementById("ninos").disabled = true;
             document.getElementById("generar-invitacion").style.display = 'none';
