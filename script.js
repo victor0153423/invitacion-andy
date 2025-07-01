@@ -30,7 +30,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const invitacionId = docRef.id;
 
-            const link = `${window.location.href.split('?')[0]}?inv=${invitacionId}`;
+            // CAMBIO: Generar link apuntando a entrada.html con parámetro inv
+            const baseUrl = window.location.origin + '/entrada.html';
+            const link = `${baseUrl}?inv=${invitacionId}`;
+
             const linkElement = document.getElementById("link-personalizado");
             linkElement.href = link;
             linkElement.textContent = "Enlace de invitación personalizado";
