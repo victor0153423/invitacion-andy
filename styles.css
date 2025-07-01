@@ -60,16 +60,15 @@ body {
 }
 
 .mermaid-abajo {
-    position:relative;
-    bottom: 20px;
-    left: 47%;
+    position: relative;
+    display: block;
+    margin: 0 auto 20px;
     width: 80px;
-    z-index: 10;
     animation: float 3s ease-in-out infinite;
     opacity: 1;
     transition: opacity 0.5s ease;
-    margin: 0 auto 20px;
 }
+
 
 
 /* Burbujas con explosión al llegar arriba */
