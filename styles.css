@@ -19,21 +19,7 @@ body {
     text-align: center;
     animation: fadeIn 2s ease forwards;
     z-index: 1;
-    overflow: hidden; /* importante para que el ::before no se desborde */
 }
-
-.invitation::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(245, 245, 220, 0.8); /* color beige con opacidad */
-    border-radius: 20px;
-    z-index: -1;
-}
-
 
 .misxv {
     font-size: 1.3em;
