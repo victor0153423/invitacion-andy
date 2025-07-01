@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  // ====== Configuración Firebase ======
+  // ====== Configuración Firebase desde variables de entorno ======
   const firebaseConfig = {
-    apiKey: "AIzaSyDFGa_lj-LenFD15NqveRhm2_1UWKKQvYA",
-    authDomain: "invitacionandy.firebaseapp.com",
-    projectId: "invitacionandy",
-    storageBucket: "invitacionandy.firebasestorage.app",
-    messagingSenderId: "197075938093",
-    appId: "1:197075938093:web:6a7f99baaf1cd34bca41a4"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
   };
 
   firebase.initializeApp(firebaseConfig);
