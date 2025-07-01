@@ -12,32 +12,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // ========== MÚSICA DE FONDO AUTOMÁTICA ==========
-    const music = document.createElement('audio');
-    music.id = 'bgMusic';
-    music.loop = true;
-    music.hidden = true;
-    music.volume = 0.3;
-
-    const source = document.createElement('source');
-    source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
-    source.type = 'audio/mpeg';
-    music.appendChild(source);
-    document.body.appendChild(music);
-
-    function startMusic() {
-        const promise = music.play();
-        if (promise !== undefined) {
-            promise.catch(error => {
-                console.log('Autoplay prevenido:', error);
-                document.addEventListener('click', () => {
-                    music.play();
-                }, { once: true });
-            });
-        }
-    }
-    startMusic();
-
     // ========== GENERADOR DE INVITACIONES ==========
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
         const adultos = parseInt(document.getElementById("adultos").value) || 0;
@@ -109,6 +83,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     setInterval(() => createBubble(bubbleContainer), 1500);
+
+    // ========== FUNCIONALIDAD DEL BOTÓN "NO SÉ CÓMO LLEGAR" ==========
+    const btnLlegar = document.getElementById('btn-llegar');
+    if (btnLlegar) {
+        btnLlegar.addEventListener('click', () => {
+            const mapsUrl = 'https://www.google.com/maps?q=Recepciones+Elegance,+Carril+de+la+Rosa+5011,+Diez+de+Mayo';
+            window.open(mapsUrl, '_blank');
+        });
+    }
 });
 
 function createBubble(container) {

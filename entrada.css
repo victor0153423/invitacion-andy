@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(to bottom, #c1e8e4, #f3d3e4);
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.entrada-texto {
+  font-family: 'Edu NSW ACT Cursive', cursive;
+  font-size: 1.8em;
+  color: #b06dcb;
+  font-weight: bold;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 15;
+}
+
+
+/* Fondo de burbujas pequeñas */
+.bubble-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: transparent; /* asegúrate que no haya color de fondo */
+}
+
+
+/* Burbuja flotante */
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  box-shadow: inset 0 0 10px #fff, 0 0 10px rgba(255, 255, 255, 0.5);
+  animation: rise 6s ease-in forwards;
+}
+
+.bubble::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(0.7);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0.9);
+    opacity: 0.8;
+  }
+}
+
+/* Burbuja grande central */
+.big-bubble {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  animation: float 4s ease-in-out infinite;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  transform: translate(-50%, -50%);
+  overflow: visible; /* para que la imagen pueda sobresalir */
+}
+
+.big-bubble span {
+  position: relative;
+  z-index: 15;
+  font-size: 1.2em;
+  color: #b06dcb;
+  font-weight: bold;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-10px); }
+}
+
+@keyframes explode {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0;
+  }
+}
+
+.sirenaburbuja {
+  position: absolute;
+  bottom: 100%; /* justo arriba del borde inferior */
+  left: 50%;
+  transform: translate(-50%, 30%); /* centra horizontalmente y baja un poco para que se "meta" dentro de la burbuja */
+  width: 200px; /* tamaño ajustable */
+  pointer-events: none;
+  z-index: 20;
+}
+
+
+
+
