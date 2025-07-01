@@ -1,124 +1,136 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // ========== MÚSICA DE FONDO AUTOMÁTICA ==========
-    const music = document.createElement('audio');
-    music.id = 'bgMusic';
-    music.loop = true;
-    music.hidden = true;
-    music.volume = 0.3; // Volumen al 30%
+document.addEventListener('DOMContentLoaded', async () => {
+  // ====== Configuración Firebase ======
+  const firebaseConfig = {
+    apiKey: "AIzaSyDFGa_lj-LenFD15NqveRhm2_1UWKKQvYA",
+    authDomain: "invitacionandy.firebaseapp.com",
+    projectId: "invitacionandy",
+    storageBucket: "invitacionandy.firebasestorage.app",
+    messagingSenderId: "197075938093",
+    appId: "1:197075938093:web:6a7f99baaf1cd34bca41a4"
+  };
 
-    const source = document.createElement('source');
-    source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
-    source.type = 'audio/mpeg';
-    music.appendChild(source);
-    document.body.appendChild(music);
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    // Función para iniciar música
-    function startMusic() {
-        const promise = music.play();
-        if (promise !== undefined) {
-            promise.catch(error => {
-                console.log('Autoplay prevenido:', error);
-                // Activar con el primer click si falla el autoplay
-                document.addEventListener('click', () => {
-                    music.play();
-                }, { once: true });
-            });
-        }
+  // ========== MÚSICA DE FONDO AUTOMÁTICA ==========
+  const music = document.createElement('audio');
+  music.id = 'bgMusic';
+  music.loop = true;
+  music.hidden = true;
+  music.volume = 0.3;
+
+  const source = document.createElement('source');
+  source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
+  source.type = 'audio/mpeg';
+  music.appendChild(source);
+  document.body.appendChild(music);
+
+  function startMusic() {
+    const promise = music.play();
+    if (promise !== undefined) {
+      promise.catch(error => {
+        console.log('Autoplay prevenido:', error);
+        document.addEventListener('click', () => {
+          music.play();
+        }, { once: true });
+      });
+    }
+  }
+  startMusic();
+
+  // ========== GENERADOR DE INVITACIONES ==========
+  document.getElementById("generar-invitacion").addEventListener("click", async () => {
+    const adultos = parseInt(document.getElementById("adultos").value) || 0;
+    const ninos = parseInt(document.getElementById("ninos").value) || 0;
+
+    if (adultos === 0 && ninos === 0) {
+      alert("Por favor, ingresa al menos un pase (adulto o niño)");
+      return;
     }
 
-    // Intentar reproducir al cargar
-    startMusic();
+    try {
+      const docRef = await db.collection('invitaciones').add({
+        adultos,
+        ninos,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      const invitacionId = docRef.id;
 
-    // ========== GENERADOR DE INVITACIONES ==========
-    document.getElementById("generar-invitacion").addEventListener("click", () => {
-        const adultos = document.getElementById("adultos").value || 0;
-        const ninos = document.getElementById("ninos").value || 0;
+      const link = `${window.location.href.split('?')[0]}?inv=${invitacionId}`;
+      const linkElement = document.getElementById("link-personalizado");
+      linkElement.href = link;
+      linkElement.textContent = "Enlace de invitación personalizado";
+      document.getElementById("invitacion-link").style.display = 'block';
 
-        if (adultos == 0 && ninos == 0) {
-            alert("Por favor, ingresa al menos un pase (adulto o niño)");
-            return;
-        }
-
-        const invitacionId = 'inv-' + Math.random().toString(36).substr(2, 8);
-
-        localStorage.setItem(`invitacion_${invitacionId}`, JSON.stringify({
-            id: invitacionId,
-            adultos: adultos,
-            ninos: ninos
-        }));
-
-        const link = `${window.location.href.split('?')[0]}?inv=${invitacionId}`;
-        const linkElement = document.getElementById("link-personalizado");
-        linkElement.href = link;
-        linkElement.textContent = "Enlace de invitación personalizado";
-        document.getElementById("invitacion-link").style.display = 'block';
-
-        navigator.clipboard.writeText(link).then(() => {
-            alert("Enlace copiado al portapeles");
-        }).catch(err => {
-            console.error("Error al copiar: ", err);
-        });
-    });
-
-    // ========== CARGAR INVITACIÓN EXISTENTE ==========
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('inv')) {
-        const data = JSON.parse(localStorage.getItem(`invitacion_${params.get('inv')}`));
-        if (data) {
-            document.getElementById("adultos").value = data.adultos || '';
-            document.getElementById("ninos").value = data.ninos || '';
-
-            // Evita que puedan editar
-            document.getElementById("adultos").readOnly = true;
-            document.getElementById("ninos").readOnly = true;
-
-            // Oculta el botón de generar
-            document.getElementById("generar-invitacion").style.display = 'none';
-        }
+      await navigator.clipboard.writeText(link);
+      alert("Enlace copiado al portapeles");
+    } catch (error) {
+      console.error("Error al guardar invitación:", error);
+      alert("Ocurrió un error al generar la invitación.");
     }
+  });
 
+  // ========== CARGAR INVITACIÓN EXISTENTE ==========
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('inv')) {
+    const invitacionId = params.get('inv');
+    try {
+      const doc = await db.collection('invitaciones').doc(invitacionId).get();
+      if (doc.exists) {
+        const data = doc.data();
+        document.getElementById("adultos").value = data.adultos || '';
+        document.getElementById("ninos").value = data.ninos || '';
 
-    // ========== ANIMACIÓN DE BURBUJAS ==========
-    const bubbleContainer = document.createElement('div');
-    bubbleContainer.style.position = 'fixed';
-    bubbleContainer.style.top = '0';
-    bubbleContainer.style.left = '0';
-    bubbleContainer.style.width = '100%';
-    bubbleContainer.style.height = '100%';
-    bubbleContainer.style.pointerEvents = 'none';
-    bubbleContainer.style.overflow = 'hidden';
-    bubbleContainer.style.zIndex = '0';
-    document.body.appendChild(bubbleContainer);
-
-    // Crear burbujas iniciales
-    for (let i = 0; i < 15; i++) {
-        setTimeout(() => createBubble(bubbleContainer), i * 300);
+        document.getElementById("adultos").readOnly = true;
+        document.getElementById("ninos").readOnly = true;
+        document.getElementById("generar-invitacion").style.display = 'none';
+      } else {
+        console.log("No existe invitación con ese ID");
+      }
+    } catch (error) {
+      console.error("Error al cargar invitación:", error);
     }
+  }
 
-    // Crear burbujas periódicamente
-    setInterval(() => createBubble(bubbleContainer), 1500);
+  // ========== ANIMACIÓN DE BURBUJAS ==========
+  const bubbleContainer = document.createElement('div');
+  bubbleContainer.style.position = 'fixed';
+  bubbleContainer.style.top = '0';
+  bubbleContainer.style.left = '0';
+  bubbleContainer.style.width = '100%';
+  bubbleContainer.style.height = '100%';
+  bubbleContainer.style.pointerEvents = 'none';
+  bubbleContainer.style.overflow = 'hidden';
+  bubbleContainer.style.zIndex = '0';
+  document.body.appendChild(bubbleContainer);
+
+  for (let i = 0; i < 15; i++) {
+    setTimeout(() => createBubble(bubbleContainer), i * 300);
+  }
+
+  setInterval(() => createBubble(bubbleContainer), 1500);
 });
 
 function createBubble(container) {
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
 
-    const size = Math.random() * 25 + 15;
-    bubble.style.width = `${size}px`;
-    bubble.style.height = `${size}px`;
-    bubble.style.left = `${Math.random() * 100}%`;
+  const size = Math.random() * 25 + 15;
+  bubble.style.width = `${size}px`;
+  bubble.style.height = `${size}px`;
+  bubble.style.left = `${Math.random() * 100}%`;
 
-    const duration = 4 + Math.random() * 3;
-    bubble.style.animationDuration = `${duration}s`;
+  const duration = 4 + Math.random() * 3;
+  bubble.style.animationDuration = `${duration}s`;
 
-    bubble.addEventListener('animationend', (e) => {
-        if (e.animationName === 'rise') {
-            bubble.style.animation = 'explode 0.5s forwards';
-            setTimeout(() => bubble.remove(), 500);
-        } else if (e.animationName === 'explode') {
-            bubble.remove();
-        }
-    });
+  bubble.addEventListener('animationend', (e) => {
+    if (e.animationName === 'rise') {
+      bubble.style.animation = 'explode 0.5s forwards';
+      setTimeout(() => bubble.remove(), 500);
+    } else if (e.animationName === 'explode') {
+      bubble.remove();
+    }
+  });
 
-    container.appendChild(bubble);
+  container.appendChild(bubble);
 }
