@@ -10,6 +10,11 @@
 </head>
 
 <body>
+    <!-- Reproductor de audio oculto y automático -->
+    <audio id="bgMusic" autoplay loop hidden>
+        <source src="assets/Only - Lee Hi (Letra en español).mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
     <div class="invitation">
         <img src="assets/Sirena.png" alt="Sirena" class="mermaid">
         <h3 class="misxv">Mis XV</h3>
@@ -27,7 +32,7 @@
 
         <div class="evento-section">
             <p class="subtitulo">Misa</p>
-            <p class="detalle">Iglesia Parroquia de la Soledad, 7:00 p.m.<br>
+            <p class="detalle">Iglesia: Parroquia de la Soledad, 7:00 p.m.<br>
                 Calzada Ignacio Zaragoza 280, Los Pinos.</p>
 
             <p class="subtitulo">Recepción</p>
@@ -41,8 +46,8 @@
         <div class="pases-section">
             <p class="subtitulo">Pases</p>
             <div class="pase-input">
-                <label>Adultos: <input type="number" id="adultos" min="0" placeholder="0"></label>
-                <label>Niños: <input type="number" id="ninos" min="0" placeholder="0"></label>
+                <label>Adultos: <input type="number" id="adultos" min="0" placeholder="0" class="numero-pase"></label>
+                <label>Niños: <input type="number" id="ninos" min="0" placeholder="0" class="numero-pase"></label>
             </div>
             <button type="button" id="generar-invitacion">Generar Invitación</button>
         </div>

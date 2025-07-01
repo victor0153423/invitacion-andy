@@ -1,11 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Generar invitación personalizada
+    // ========== MÚSICA DE FONDO AUTOMÁTICA ==========
+    const music = document.createElement('audio');
+    music.id = 'bgMusic';
+    music.loop = true;
+    music.hidden = true;
+    music.volume = 0.3; // Volumen al 30%
+    
+    const source = document.createElement('source');
+    source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
+    source.type = 'audio/mpeg';
+    music.appendChild(source);
+    document.body.appendChild(music);
+    
+    // Función para iniciar música
+    function startMusic() {
+        const promise = music.play();
+        if (promise !== undefined) {
+            promise.catch(error => {
+                console.log('Autoplay prevenido:', error);
+                // Activar con el primer click si falla el autoplay
+                document.addEventListener('click', () => {
+                    music.play();
+                }, { once: true });
+            });
+        }
+    }
+    
+    // Intentar reproducir al cargar
+    startMusic();
+    
+    // ========== GENERADOR DE INVITACIONES ==========
     document.getElementById("generar-invitacion").addEventListener("click", () => {
-        // Obtener valores, usando 0 si el campo está vacío
         const adultos = document.getElementById("adultos").value || 0;
         const ninos = document.getElementById("ninos").value || 0;
         
-        // Validar que al menos haya un pase
         if (adultos == 0 && ninos == 0) {
             alert("Por favor, ingresa al menos un pase (adulto o niño)");
             return;
@@ -32,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Cargar datos si hay invitación compartida
+    // ========== CARGAR INVITACIÓN EXISTENTE ==========
     const params = new URLSearchParams(window.location.search);
     if (params.has('inv')) {
         const data = JSON.parse(localStorage.getItem(`invitacion_${params.get('inv')}`));
@@ -45,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Contenedor para las burbujas (mejor rendimiento)
+    // ========== ANIMACIÓN DE BURBUJAS ==========
     const bubbleContainer = document.createElement('div');
     bubbleContainer.style.position = 'fixed';
     bubbleContainer.style.top = '0';
@@ -70,17 +98,14 @@ function createBubble(container) {
     const bubble = document.createElement("div");
     bubble.className = "bubble";
     
-    // Tamaño y posición aleatoria
     const size = Math.random() * 25 + 15;
     bubble.style.width = `${size}px`;
     bubble.style.height = `${size}px`;
     bubble.style.left = `${Math.random() * 100}%`;
     
-    // Duración de la animación
     const duration = 4 + Math.random() * 3;
     bubble.style.animationDuration = `${duration}s`;
     
-    // Cuando termine de subir, explotar
     bubble.addEventListener('animationend', (e) => {
         if (e.animationName === 'rise') {
             bubble.style.animation = 'explode 0.5s forwards';
