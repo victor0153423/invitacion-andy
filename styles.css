@@ -169,3 +169,46 @@ body {
     max-width: 90%;
     line-height: 1.4em;
 }
+
+.pases-section {
+    margin: 15px 0 0 0;
+}
+
+.pase-input {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.pase-input input {
+    width: 50px;
+    padding: 3px;
+    border: 1px solid #b06dcb;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#generar-invitacion {
+    background-color: #b06dcb;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s;
+}
+
+#generar-invitacion:hover {
+    background-color: #fd7796;
+}
+
+#invitacion-link {
+    max-width: 500px;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    display: none;
+}
