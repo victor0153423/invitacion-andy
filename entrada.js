@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Esperar animación para redirigir
     setTimeout(() => {
-      window.location.href = "index.html"; // Cambia por la URL real de tu invitación
+      window.location.href = "entrada.html"; // Cambia por la URL real de tu invitación
     }, 700);
   });
 });

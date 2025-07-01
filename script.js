@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const invitacionId = docRef.id;
 
             // CAMBIO: Generar link apuntando a entrada.html con parámetro inv
-            const baseUrl = window.location.origin + '/entrada.html';
+            const baseUrl = window.location.origin + '/index.html';
             const link = `${baseUrl}?inv=${invitacionId}`;
 
             const linkElement = document.getElementById("link-personalizado");
