@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     music.loop = true;
     music.hidden = true;
     music.volume = 0.3; // Volumen al 30%
-    
+
     const source = document.createElement('source');
     source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
     source.type = 'audio/mpeg';
     music.appendChild(source);
     document.body.appendChild(music);
-    
+
     // Función para iniciar música
     function startMusic() {
         const promise = music.play();
@@ -25,34 +25,34 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-    
+
     // Intentar reproducir al cargar
     startMusic();
-    
+
     // ========== GENERADOR DE INVITACIONES ==========
     document.getElementById("generar-invitacion").addEventListener("click", () => {
         const adultos = document.getElementById("adultos").value || 0;
         const ninos = document.getElementById("ninos").value || 0;
-        
+
         if (adultos == 0 && ninos == 0) {
             alert("Por favor, ingresa al menos un pase (adulto o niño)");
             return;
         }
-        
+
         const invitacionId = 'inv-' + Math.random().toString(36).substr(2, 8);
-        
+
         localStorage.setItem(`invitacion_${invitacionId}`, JSON.stringify({
             id: invitacionId,
             adultos: adultos,
             ninos: ninos
         }));
-        
+
         const link = `${window.location.href.split('?')[0]}?inv=${invitacionId}`;
         const linkElement = document.getElementById("link-personalizado");
         linkElement.href = link;
         linkElement.textContent = "Enlace de invitación personalizado";
         document.getElementById("invitacion-link").style.display = 'block';
-        
+
         navigator.clipboard.writeText(link).then(() => {
             alert("Enlace copiado al portapeles");
         }).catch(err => {
@@ -67,11 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data) {
             document.getElementById("adultos").value = data.adultos || '';
             document.getElementById("ninos").value = data.ninos || '';
-            document.getElementById("adultos").disabled = true;
-            document.getElementById("ninos").disabled = true;
+
+            // Evita que puedan editar
+            document.getElementById("adultos").readOnly = true;
+            document.getElementById("ninos").readOnly = true;
+
+            // Oculta el botón de generar
             document.getElementById("generar-invitacion").style.display = 'none';
         }
     }
+
 
     // ========== ANIMACIÓN DE BURBUJAS ==========
     const bubbleContainer = document.createElement('div');
@@ -97,15 +102,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function createBubble(container) {
     const bubble = document.createElement("div");
     bubble.className = "bubble";
-    
+
     const size = Math.random() * 25 + 15;
     bubble.style.width = `${size}px`;
     bubble.style.height = `${size}px`;
     bubble.style.left = `${Math.random() * 100}%`;
-    
+
     const duration = 4 + Math.random() * 3;
     bubble.style.animationDuration = `${duration}s`;
-    
+
     bubble.addEventListener('animationend', (e) => {
         if (e.animationName === 'rise') {
             bubble.style.animation = 'explode 0.5s forwards';
@@ -114,6 +119,6 @@ function createBubble(container) {
             bubble.remove();
         }
     });
-    
+
     container.appendChild(bubble);
 }
