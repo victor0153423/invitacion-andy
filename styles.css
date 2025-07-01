@@ -59,6 +59,19 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
+.mermaid-abajo {
+    position:relative;
+    bottom: 20px;
+    left: 47%;
+    width: 80px;
+    z-index: 10;
+    animation: float 3s ease-in-out infinite;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    margin: 0 auto 20px;
+}
+
+
 /* Burbujas con explosión al llegar arriba */
 .bubble {
     position: absolute;
@@ -67,7 +80,7 @@ body {
     border-radius: 50%;
     opacity: 0;
     z-index: 0;
-    box-shadow: 
+    box-shadow:
         inset 0 0 10px rgba(255, 255, 255, 0.8),
         0 0 15px rgba(255, 255, 255, 0.5);
     transform-origin: center;
@@ -91,12 +104,15 @@ body {
         transform: translateY(0) scale(0.7);
         opacity: 0;
     }
+
     20% {
         opacity: 0.8;
     }
+
     80% {
         opacity: 0.8;
     }
+
     100% {
         transform: translateY(-100vh) scale(0.9);
         opacity: 0.8;
@@ -109,6 +125,7 @@ body {
         transform: translateY(-100vh) scale(0.9);
         opacity: 0.8;
     }
+
     100% {
         transform: translateY(-100vh) scale(3);
         opacity: 0;
@@ -119,9 +136,11 @@ body {
     0% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-15px);
     }
+
     100% {
         transform: translateY(0);
     }
@@ -132,6 +151,7 @@ body {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -247,4 +267,3 @@ body {
     font-size: 1.1em;
     color: #333;
 }
-

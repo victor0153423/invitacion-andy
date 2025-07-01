@@ -5,61 +5,74 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Invitación XV Años - Andy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- Música -->
-  <audio id="bgMusic" autoplay loop hidden>
-    <source src="assets/Only - Lee Hi (Letra en español).mp3" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
-  </audio>
+    <!-- Fondo sirena para efecto scroll -->
+    <div id="sirena-bg"></div>
 
-  <!-- Invitación principal -->
-  <div class="invitation">
-    <img src="assets/Sirena.png" alt="Sirena" class="mermaid">
-    <h3 class="misxv">Mis XV</h3>
-    <h1 class="nombre">Andy</h1>
-    <h2 class="fecha">2 de agosto 2025</h2>
-    <p>Con la gracia de Dios, linda princesita, tu noche mágica e inolvidable ha llegado.</p>
+    <!-- Música -->
+    <audio id="bgMusic" autoplay loop hidden>
+        <source src="assets/Only - Lee Hi (Letra en español).mp3" type="audio/mpeg" />
+        Tu navegador no soporta el elemento de audio.
+    </audio>
 
-    <div class="familia-section">
-      <p class="subtitulo">Mamá</p>
-      <p class="nombre-cursiva">Ivonne Texca Morales</p>
-      <p class="subtitulo">Padrinos</p>
-      <p class="nombre-cursiva">Armando Carrasco Mejia</p>
-      <p class="nombre-cursiva">Adriana Texca Morales</p>
-    </div>
-  </div>
+    <!-- Invitación principal -->
+    <div class="invitation">
+        <img src="assets/Sirena.png" alt="Sirena" class="mermaid" />
+        <h3 class="misxv">Mis XV</h3>
+        <h1 class="nombre">Andy</h1>
+        <h2 class="fecha">2 de agosto 2025</h2>
+        <p>Con la gracia de Dios, linda princesita, tu noche mágica e inolvidable ha llegado.</p>
 
-  <!-- Invitación/misa y pases -->
-  <div class="invitation">
-    <div class="evento-section">
-      <p class="subtitulo">Misa</p>
-      <p class="detalle">Iglesia: Parroquia de la Soledad, 7:00 p.m.<br>
-        Calzada Ignacio Zaragoza 280, Los Pinos.</p>
-
-      <p class="subtitulo">Recepción</p>
-      <p class="detalle">Salón: Recepciones Elegance, 8:30 p.m.<br>
-        Carril de la Rosa 5011, Diez de Mayo</p>
-
-      <img src="assets/QR.png" alt="QR Recepción" class="qr-image">
+        <div class="familia-section">
+            <p class="subtitulo">Mamá</p>
+            <p class="nombre-cursiva">Ivonne Texca Morales</p>
+            <p class="subtitulo">Padrinos</p>
+            <p class="nombre-cursiva">Armando Carrasco Mejia</p>
+            <p class="nombre-cursiva">Adriana Texca Morales</p>
+        </div>
     </div>
 
-    <div class="pases-section">
-      <p class="subtitulo">Pases</p>
-      <div class="pase-input">
-        <label>Adultos: <input type="number" id="adultos" min="0" placeholder="0" class="numero-pase"></label>
-        <label>Niños: <input type="number" id="ninos" min="0" placeholder="0" class="numero-pase"></label>
-      </div>
-      <button type="button" id="generar-invitacion">Generar Invitación</button>
+    <!-- Invitación/misa y pases -->
+    <div class="invitation">
+        <div class="evento-section">
+            <p class="subtitulo">Misa</p>
+            <p class="detalle">
+                Iglesia: Parroquia de la Soledad, 7:00 p.m.<br />
+                Calzada Ignacio Zaragoza 280, Los Pinos.
+            </p>
+
+            <p class="subtitulo">Recepción</p>
+            <p class="detalle">
+                Salón: Recepciones Elegance, 8:30 p.m.<br />
+                Carril de la Rosa 5011, Diez de Mayo
+            </p>
+
+            <img src="assets/QR.png" alt="QR Recepción" class="qr-image" />
+        </div>
+
+        <div class="pases-section">
+            <p class="subtitulo">Pases</p>
+            <div class="pase-input">
+                <label>Adultos:
+                    <input type="number" id="adultos" min="0" placeholder="0" class="numero-pase" />
+                </label>
+                <label>Niños:
+                    <input type="number" id="ninos" min="0" placeholder="0" class="numero-pase" />
+                </label>
+            </div>
+            <button type="button" id="generar-invitacion">Generar Invitación</button>
+        </div>
     </div>
-  </div>
 
-  <div id="invitacion-link">
-    <a id="link-personalizado" href="#" target="_blank"></a>
-  </div>
-
-  <script src="script.js"></script>
+    <div id="invitacion-link">
+        <a id="link-personalizado" href="#" target="_blank"></a>
+    </div>
+    <img src="assets/Sirena.png" alt="Sirena" class="mermaid-abajo" />
+    <script src="script.js"></script>
 </body>
+
+</html>
