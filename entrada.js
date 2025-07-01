@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Explosión de burbuja grande y reproducción de música
   const bigBubble = document.getElementById('big-bubble');
   bigBubble.addEventListener('click', () => {
+    // Guardar flag para mantener música activa
+    sessionStorage.setItem('musicaActiva', 'true');
+
     // Reproducir música
     music.play().catch(e => console.warn('No se pudo reproducir la música:', e));
 

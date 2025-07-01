@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // === REPRODUCCIÓN DE MÚSICA SI VIENE DE INDEX ===
+    if (sessionStorage.getItem('musicaActiva') === 'true') {
+        const music = document.createElement('audio');
+        music.id = 'bgMusic';
+        music.loop = true;
+        music.volume = 0.3;
+
+        const source = document.createElement('source');
+        source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
+        source.type = 'audio/mpeg';
+        music.appendChild(source);
+        document.body.appendChild(music);
+
+        music.play().catch(e => {
+            console.warn('No se pudo reproducir la música:', e);
+        });
+    }
+
     // config firebase con valores explícitos:
     const firebaseConfig = {
         apiKey: "AIzaSyDFGa_lj-LenFD15NqveRhm2_1UWKKQvYA",
