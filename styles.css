@@ -247,3 +247,27 @@ body {
     font-size: 1.1em;
     color: #333;
 }
+
+@media (max-width: 600px) {
+    .invitation {
+        background-size: 130%; /* aleja la imagen de fondo */
+        background-color: white; /* blanco detrás si la imagen no cubre todo */
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 20px;
+        margin: 40px auto;
+    }
+
+    .nombre {
+        font-size: 2em;
+    }
+
+    .fecha {
+        font-size: 1em;
+    }
+
+    .misxv {
+        font-size: 1em;
+    }
+}
+
