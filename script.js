@@ -84,7 +84,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ======= Generador de invitaciones =======
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
         const adultos = parseInt(document.getElementById("adultos").value) || 0;
         const ninos = parseInt(document.getElementById("ninos").value) || 0;
@@ -110,13 +109,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             linkElement.textContent = "Enlace de invitación personalizado";
             document.getElementById("invitacion-link").style.display = 'block';
 
+            // Crear o actualizar botón copiar
+            let btnCopiar = document.getElementById('btn-copiar-link');
+            if (!btnCopiar) {
+                btnCopiar = document.createElement('button');
+                btnCopiar.id = 'btn-copiar-link';
+                btnCopiar.textContent = 'Copiar';
+                btnCopiar.style.marginLeft = '10px';
+                btnCopiar.style.padding = '5px 10px';
+                btnCopiar.style.cursor = 'pointer';
+
+                linkElement.parentNode.appendChild(btnCopiar);
+
+                btnCopiar.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(link);
+                        alert('Link copiado al portapapeles');
+                    } catch {
+                        alert('Error al copiar el link');
+                    }
+                });
+            }
+
+            // Copiar automáticamente al generar
             await navigator.clipboard.writeText(link);
             alert("Enlace copiado al portapeles");
+
         } catch (error) {
             console.error("Error al guardar invitación:", error);
             alert("Ocurrió un error al generar la invitación.");
         }
     });
+
 
     // ======= Cargar invitación existente =======
     const params = new URLSearchParams(window.location.search);
