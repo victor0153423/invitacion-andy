@@ -12,7 +12,78 @@ document.addEventListener('DOMContentLoaded', async () => {
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
- 
+    // ======= Música de fondo automática =======
+    const music = document.createElement('audio');
+    music.id = 'bgMusic';
+    music.loop = true;
+    music.hidden = true;
+    music.volume = 0.3;
+
+    const source = document.createElement('source');
+    source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
+    source.type = 'audio/mpeg';
+    music.appendChild(source);
+    document.body.appendChild(music);
+
+    // Función para mostrar botón si no se puede reproducir música automáticamente
+    function showPlayButton() {
+        if (document.getElementById('btn-play-music')) return;
+        const btn = document.createElement('button');
+        btn.id = 'btn-play-music';
+        btn.textContent = '🎵 Toca para activar música';
+        btn.style.position = 'fixed';
+        btn.style.bottom = '20px';
+        btn.style.left = '50%';
+        btn.style.transform = 'translateX(-50%)';
+        btn.style.padding = '10px 20px';
+        btn.style.fontSize = '18px';
+        btn.style.zIndex = '9999';
+        document.body.appendChild(btn);
+
+        btn.addEventListener('click', () => {
+            music.play();
+            btn.remove();
+        });
+    }
+
+    // Intentar iniciar música automáticamente
+    function startMusic() {
+        const promise = music.play();
+        if (promise !== undefined) {
+            promise.catch(error => {
+                console.log('Autoplay prevenido:', error);
+                showPlayButton();
+            });
+        }
+    }
+
+    startMusic();
+
+    // ======= Control del reproductor tipo iOS (botón play/pausa) =======
+    const playBtn = document.getElementById('btn-play');
+    if (playBtn) {
+        playBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play().then(() => {
+                    playBtn.textContent = '⏸';
+                }).catch(err => {
+                    console.log('No se pudo iniciar la música:', err);
+                });
+            } else {
+                music.pause();
+                playBtn.textContent = '▶';
+            }
+        });
+
+        music.addEventListener('play', () => {
+            playBtn.textContent = '⏸';
+        });
+
+        music.addEventListener('pause', () => {
+            playBtn.textContent = '▶';
+        });
+    }
+
     // ======= Generador de invitaciones =======
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
         const adultos = parseInt(document.getElementById("adultos").value) || 0;
