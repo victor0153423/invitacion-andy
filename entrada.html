@@ -12,14 +12,24 @@
 <body>
 <div class="music-player-glass">
   <div class="track-info">
-    <img src="assets/only.avif" alt="Portada" class="album-art">
+    <img src="assets/only.png" alt="Portada" class="album-art">
     <div>
       <div class="track-title">Only</div>
       <div class="track-artist">Lee Hi</div>
     </div>
   </div>
-  <button id="btn-play" class="play-button">▶</button>
+  <button id="btn-play" class="play-button" aria-label="Play/Pause">
+    <!-- Icono Play -->
+    <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24" height="24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <!-- Icono Pausa -->
+    <svg class="icon-pause" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="24" height="24" style="display:none;">
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+    </svg>
+  </button>
 </div>
+
 
   <!-- Invitación principal -->
   <div class="invitation">

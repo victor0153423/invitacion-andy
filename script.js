@@ -59,30 +59,35 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     startMusic();
 
-    // ======= Control del reproductor tipo iOS (botón play/pausa) =======
+    // ======= Control del reproductor tipo iOS (botón play/pausa) con SVG =======
     const playBtn = document.getElementById('btn-play');
-    if (playBtn) {
-        playBtn.addEventListener('click', () => {
-            if (music.paused) {
-                music.play().then(() => {
-                    playBtn.textContent = '⏸';
-                }).catch(err => {
-                    console.log('No se pudo iniciar la música:', err);
-                });
-            } else {
-                music.pause();
-                playBtn.textContent = '▶';
-            }
-        });
+    const iconPlay = playBtn.querySelector('.icon-play');
+    const iconPause = playBtn.querySelector('.icon-pause');
 
-        music.addEventListener('play', () => {
-            playBtn.textContent = '⏸';
-        });
+    playBtn.addEventListener('click', () => {
+        if (music.paused) {
+            music.play().then(() => {
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
+            }).catch(err => {
+                console.log('No se pudo iniciar la música:', err);
+            });
+        } else {
+            music.pause();
+            iconPlay.style.display = 'block';
+            iconPause.style.display = 'none';
+        }
+    });
 
-        music.addEventListener('pause', () => {
-            playBtn.textContent = '▶';
-        });
-    }
+    music.addEventListener('play', () => {
+        iconPlay.style.display = 'none';
+        iconPause.style.display = 'block';
+    });
+
+    music.addEventListener('pause', () => {
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+    });
 
     // ======= Generador de invitaciones =======
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
