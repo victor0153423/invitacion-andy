@@ -92,6 +92,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // ========== FUNCIONALIDAD DEL BOTÓN "NO SÉ CÓMO LLEGAR" ==========
+    const btnLlegar = document.getElementById('btn-llegar');
+    if (btnLlegar) {
+        btnLlegar.addEventListener('click', () => {
+            const mapsUrl = 'https://www.google.com/maps?q=Recepciones+Elegance,+Carril+de+la+Rosa+5011,+Diez+de+Mayo';
+            window.open(mapsUrl, '_blank');
+        });
+    }
+
     // ========== ANIMACIÓN DE BURBUJAS ==========
     const bubbleContainer = document.createElement('div');
     bubbleContainer.style.position = 'fixed';
