@@ -12,6 +12,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // ========== MÚSICA DE FONDO AUTOMÁTICA ==========
+    const music = document.createElement('audio');
+    music.id = 'bgMusic';
+    music.loop = true;
+    music.hidden = true;
+    music.volume = 0.3;
+
+    const source = document.createElement('source');
+    source.src = 'assets/Only - Lee Hi (Letra en español).mp3';
+    source.type = 'audio/mpeg';
+    music.appendChild(source);
+    document.body.appendChild(music);
+
+    function startMusic() {
+        const promise = music.play();
+        if (promise !== undefined) {
+            promise.catch(error => {
+                console.log('Autoplay prevenido:', error);
+                document.addEventListener('click', () => {
+                    music.play();
+                }, { once: true });
+            });
+        }
+    }
+    startMusic();
+
     // ========== GENERADOR DE INVITACIONES ==========
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
         const adultos = parseInt(document.getElementById("adultos").value) || 0;
@@ -30,10 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const invitacionId = docRef.id;
 
-            // CORRECCIÓN: uso correcto de template literal con backticks ``
-            const baseUrl = window.location.origin + '/index.html';
-            const link = `${baseUrl}?inv=${invitacionId}`;
-
+            const link = `${window.location.href.split('?')[0]}?inv=${invitacionId}`;
             const linkElement = document.getElementById("link-personalizado");
             linkElement.href = link;
             linkElement.textContent = "Enlace de invitación personalizado";
@@ -47,36 +70,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-// ========== CARGAR INVITACIÓN EXISTENTE ==========
-const params = new URLSearchParams(window.location.search);
-if (params.has('inv')) {
-    const invitacionId = params.get('inv');
-    try {
-        const doc = await db.collection('invitaciones').doc(invitacionId).get();
-        if (doc.exists) {
-            const data = doc.data();
-            document.getElementById("adultos").value = data.adultos || '';
-            document.getElementById("ninos").value = data.ninos || '';
+    // ========== CARGAR INVITACIÓN EXISTENTE ==========
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('inv')) {
+        const invitacionId = params.get('inv');
+        try {
+            const doc = await db.collection('invitaciones').doc(invitacionId).get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById("adultos").value = data.adultos || '';
+                document.getElementById("ninos").value = data.ninos || '';
 
-            document.getElementById("adultos").readOnly = true;
-            document.getElementById("ninos").readOnly = true;
-            document.getElementById("generar-invitacion").style.display = 'none';
-
-            // Aquí agregamos para mostrar el link personalizado con el invitacionId:
-            const baseUrl = window.location.origin + '/index.html';
-            const link = `${baseUrl}?inv=${invitacionId}`;
-            const linkElement = document.getElementById("link-personalizado");
-            linkElement.href = link;
-            linkElement.textContent = "Enlace de invitación personalizado";
-            document.getElementById("invitacion-link").style.display = 'block';
-        } else {
-            console.log("No existe invitación con ese ID");
+                document.getElementById("adultos").readOnly = true;
+                document.getElementById("ninos").readOnly = true;
+                document.getElementById("generar-invitacion").style.display = 'none';
+            } else {
+                console.log("No existe invitación con ese ID");
+            }
+        } catch (error) {
+            console.error("Error al cargar invitación:", error);
         }
-    } catch (error) {
-        console.error("Error al cargar invitación:", error);
     }
-}
-
 
     // ========== ANIMACIÓN DE BURBUJAS ==========
     const bubbleContainer = document.createElement('div');
@@ -95,15 +109,6 @@ if (params.has('inv')) {
     }
 
     setInterval(() => createBubble(bubbleContainer), 1500);
-
-    // ========== FUNCIONALIDAD DEL BOTÓN "NO SÉ CÓMO LLEGAR" ==========
-    const btnLlegar = document.getElementById('btn-llegar');
-    if (btnLlegar) {
-        btnLlegar.addEventListener('click', () => {
-            const mapsUrl = 'https://www.google.com/maps?q=Recepciones+Elegance,+Carril+de+la+Rosa+5011,+Diez+de+Mayo';
-            window.open(mapsUrl, '_blank');
-        });
-    }
 });
 
 function createBubble(container) {
@@ -111,7 +116,7 @@ function createBubble(container) {
     bubble.className = "bubble";
 
     const size = Math.random() * 25 + 15;
-    bubble.style.width = `${size}px`;  // comillas invertidas y ${} para interpolar
+    bubble.style.width = `${size}px`;
     bubble.style.height = `${size}px`;
     bubble.style.left = `${Math.random() * 100}%`;
 
