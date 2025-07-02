@@ -112,39 +112,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             const baseUrl = window.location.origin + '/index.html';
             const link = `${baseUrl}?inv=${invitacionId}`;
 
+            // Actualiza el enlace visible
             const linkElement = document.getElementById("link-personalizado");
             linkElement.href = link;
             linkElement.textContent = "Enlace de invitación personalizado";
             document.getElementById("invitacion-link").style.display = 'block';
 
-            // ======= Copiar automáticamente al portapapeles =======
-            try {
-                await navigator.clipboard.writeText(link);
-                alert("✅ Enlace copiado al portapapeles");
-            } catch (err1) {
-                // Backup: copiar con <textarea> si falla clipboard API
-                const textarea = document.createElement("textarea");
-                textarea.value = link;
-                textarea.setAttribute('readonly', '');
-                textarea.style.position = 'absolute';
-                textarea.style.left = '-9999px';
-                document.body.appendChild(textarea);
-                textarea.select();
-                const successful = document.execCommand('copy');
-                document.body.removeChild(textarea);
+            // Copiar al portapapeles y esperar que termine
+            await navigator.clipboard.writeText(link);
 
-                if (successful) {
-                    alert("✅ Enlace copiado al portapapeles");
-                } else {
-                    alert("🔗 Aquí está tu enlace:\n" + link);
-                }
-            }
+            // Solo después de que se copie exitosamente mostramos la alerta
+            alert("Enlace copiado al portapapeles");
 
         } catch (error) {
-            console.error("Error al guardar invitación:", error);
-            alert("❌ Ocurrió un error al generar la invitación.");
+            console.error("Error al guardar invitación o copiar enlace:", error);
+            alert("Ocurrió un error al generar la invitación.");
         }
     });
+
 
 
     // ======= Cargar invitación existente =======
