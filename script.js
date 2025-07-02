@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const invitacionId = docRef.id;
 
-            // CAMBIO: Generar link apuntando a entrada.html con parámetro inv
+            // CORRECCIÓN: uso correcto de template literal con backticks ``
             const baseUrl = window.location.origin + '/index.html';
             const link = `${baseUrl}?inv=${invitacionId}`;
 
@@ -102,7 +102,7 @@ function createBubble(container) {
     bubble.className = "bubble";
 
     const size = Math.random() * 25 + 15;
-    bubble.style.width = `${size}px`;
+    bubble.style.width = `${size}px`;  // comillas invertidas y ${} para interpolar
     bubble.style.height = `${size}px`;
     bubble.style.left = `${Math.random() * 100}%`;
 
