@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (document.getElementById('btn-play-music')) return;
         const btn = document.createElement('button');
         btn.id = 'btn-play-music';
-        btn.textContent = '🎵 Toca para activar música';
+        btn.textContent = 'Toca para activar música';
         btn.style.position = 'fixed';
         btn.style.bottom = '20px';
         btn.style.left = '50%';
@@ -59,31 +59,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     startMusic();
 
-    // ======= Control del reproductor tipo iOS (botón play/pausa) =======
+    // ======= Control del reproductor con íconos SVG (play/pausa) =======
     const playBtn = document.getElementById('btn-play');
     if (playBtn) {
+        const iconPlay = playBtn.querySelector('.icon-play');
+        const iconPause = playBtn.querySelector('.icon-pause');
+
         playBtn.addEventListener('click', () => {
             if (music.paused) {
                 music.play().then(() => {
-                    playBtn.textContent = '⏸';
+                    iconPlay.style.display = 'none';
+                    iconPause.style.display = 'block';
                 }).catch(err => {
                     console.log('No se pudo iniciar la música:', err);
                 });
             } else {
                 music.pause();
-                playBtn.textContent = '▶';
+                iconPlay.style.display = 'block';
+                iconPause.style.display = 'none';
             }
         });
 
         music.addEventListener('play', () => {
-            playBtn.textContent = '⏸';
+            iconPlay.style.display = 'none';
+            iconPause.style.display = 'block';
         });
 
         music.addEventListener('pause', () => {
-            playBtn.textContent = '▶';
+            iconPlay.style.display = 'block';
+            iconPause.style.display = 'none';
         });
     }
 
+    // ======= Generador de invitaciones =======
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
         const adultos = parseInt(document.getElementById("adultos").value) || 0;
         const ninos = parseInt(document.getElementById("ninos").value) || 0;
@@ -133,14 +141,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Copiar automáticamente al generar
             await navigator.clipboard.writeText(link);
-            alert("Enlace copiado al portapeles");
+            alert("Enlace copiado al portapapeles");
 
         } catch (error) {
             console.error("Error al guardar invitación:", error);
-            alert("Ocurrió un error al generar la invitación.");
         }
     });
-
 
     // ======= Cargar invitación existente =======
     const params = new URLSearchParams(window.location.search);
