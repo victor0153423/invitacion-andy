@@ -10,11 +10,16 @@
 </head>
 
 <body>
-  <!-- Música -->
-  <audio id="bgMusic" autoplay loop hidden>
-    <source src="assets/Only - Lee Hi (Letra en español).mp3" type="audio/mpeg" />
-    Tu navegador no soporta el elemento de audio.
-  </audio>
+<div class="music-player-glass">
+  <div class="track-info">
+    <img src="assets/only.avif" alt="Portada" class="album-art">
+    <div>
+      <div class="track-title">Only</div>
+      <div class="track-artist">Lee Hi</div>
+    </div>
+  </div>
+  <button id="btn-play" class="play-button">▶</button>
+</div>
 
   <!-- Invitación principal -->
   <div class="invitation">
