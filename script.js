@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ninos,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-
             const invitacionId = docRef.id;
+
             const baseUrl = window.location.origin + '/index.html';
             const link = `${baseUrl}?inv=${invitacionId}`;
 
@@ -117,20 +117,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             linkElement.textContent = "Enlace de invitación personalizado";
             document.getElementById("invitacion-link").style.display = 'block';
 
-            // Intentar copiar al portapapeles
+            // ======= Copiar automáticamente al portapapeles =======
             try {
                 await navigator.clipboard.writeText(link);
-                alert("Enlace copiado al portapeles");
-            } catch (clipboardError) {
-                console.warn("No se pudo copiar automáticamente. Aquí tienes el enlace:", link);
-                alert("Invitación generada. Copia el enlace manualmente:\n" + link);
+                alert("✅ Enlace copiado al portapapeles");
+            } catch (err1) {
+                // Backup: copiar con <textarea> si falla clipboard API
+                const textarea = document.createElement("textarea");
+                textarea.value = link;
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'absolute';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                if (successful) {
+                    alert("✅ Enlace copiado al portapapeles");
+                } else {
+                    alert("🔗 Aquí está tu enlace:\n" + link);
+                }
             }
 
-        } catch (firebaseError) {
-            console.error("Error al guardar invitación:", firebaseError);
-            alert("Ocurrió un error al generar la invitación.");
+        } catch (error) {
+            console.error("Error al guardar invitación:", error);
+            alert("❌ Ocurrió un error al generar la invitación.");
         }
     });
+
 
     // ======= Cargar invitación existente =======
     const params = new URLSearchParams(window.location.search);
