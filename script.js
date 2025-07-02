@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ninos,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-            const invitacionId = docRef.id;
 
+            const invitacionId = docRef.id;
             const baseUrl = window.location.origin + '/index.html';
             const link = `${baseUrl}?inv=${invitacionId}`;
 
@@ -117,10 +117,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             linkElement.textContent = "Enlace de invitación personalizado";
             document.getElementById("invitacion-link").style.display = 'block';
 
-            await navigator.clipboard.writeText(link);
-            alert("Enlace copiado al portapeles");
-        } catch (error) {
-            console.error("Error al guardar invitación:", error);
+            // Intentar copiar al portapapeles
+            try {
+                await navigator.clipboard.writeText(link);
+                alert("Enlace copiado al portapeles");
+            } catch (clipboardError) {
+                console.warn("No se pudo copiar automáticamente. Aquí tienes el enlace:", link);
+                alert("Invitación generada. Copia el enlace manualmente:\n" + link);
+            }
+
+        } catch (firebaseError) {
+            console.error("Error al guardar invitación:", firebaseError);
             alert("Ocurrió un error al generar la invitación.");
         }
     });
