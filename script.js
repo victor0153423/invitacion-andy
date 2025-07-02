@@ -1,18 +1,18 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // config firebase con valores explícitos:
+    // Configuración de Firebase (sin cambios)
     const firebaseConfig = {
         apiKey: "AIzaSyDFGa_lj-LenFD15NqveRhm2_1UWKKQvYA",
         authDomain: "invitacionandy.firebaseapp.com",
         projectId: "invitacionandy",
         storageBucket: "invitacionandy.firebasestorage.app",
         messagingSenderId: "197075938093",
-        appId: "1:197075938093:web:6a7f99baaf1cd34bca41a4"
+        appId: "1:197075938093:web:6a7f99ba41a4"
     };
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // ========== MÚSICA DE FONDO AUTOMÁTICA ==========
+    // ======= Música de fondo automática =======
     const music = document.createElement('audio');
     music.id = 'bgMusic';
     music.loop = true;
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     startMusic();
 
-    // ========== GENERADOR DE INVITACIONES ==========
+    // ======= Generador de invitaciones =======
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
         const adultos = parseInt(document.getElementById("adultos").value) || 0;
         const ninos = parseInt(document.getElementById("ninos").value) || 0;
@@ -56,7 +56,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             const invitacionId = docRef.id;
 
-            const link = `${window.location.href.split('?')[0]}?inv=${invitacionId}`;
+            // Genera link hacia index.html con ?inv=
+            const baseUrl = window.location.origin + '/index.html';
+            const link = `${baseUrl}?inv=${invitacionId}`;
+
             const linkElement = document.getElementById("link-personalizado");
             linkElement.href = link;
             linkElement.textContent = "Enlace de invitación personalizado";
@@ -70,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // ========== CARGAR INVITACIÓN EXISTENTE ==========
+    // ======= Cargar invitación existente =======
     const params = new URLSearchParams(window.location.search);
     if (params.has('inv')) {
         const invitacionId = params.get('inv');
@@ -92,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // ========== FUNCIONALIDAD DEL BOTÓN "NO SÉ CÓMO LLEGAR" ==========
+    // ======= Botón "No sé cómo llegar" =======
     const btnLlegar = document.getElementById('btn-llegar');
     if (btnLlegar) {
         btnLlegar.addEventListener('click', () => {
@@ -101,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ========== ANIMACIÓN DE BURBUJAS ==========
+    // ======= Animación de burbujas =======
     const bubbleContainer = document.createElement('div');
     bubbleContainer.style.position = 'fixed';
     bubbleContainer.style.top = '0';

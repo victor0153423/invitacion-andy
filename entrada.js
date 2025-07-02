@@ -48,9 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animar explosión
     bigBubble.style.animation = 'explode 0.7s forwards';
 
-    // Esperar animación para redirigir
+    // Esperar animación para redirigir con ?inv=
     setTimeout(() => {
-      window.location.href = "entrada.html"; // Cambia por la URL real de tu invitación
+      const params = new URLSearchParams(window.location.search);
+      const invId = params.get('inv');
+      if (invId) {
+        window.location.href = `entrada.html?inv=${invId}`;
+      } else {
+        window.location.href = `entrada.html`;
+      }
     }, 700);
   });
 });
