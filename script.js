@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const linkElement = document.getElementById("link-personalizado");
             linkElement.href = link;
-            linkElement.textContent = "Enlace de invitación personalizado";
+            linkElement.textContent = "Enlace de invitación";
             document.getElementById("invitacion-link").style.display = 'block';
 
             // Crear o actualizar botón copiar
