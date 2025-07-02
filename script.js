@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.appendChild(btn);
 
         btn.addEventListener('click', () => {
-            music.play().then(() => btn.remove());
+            music.play();
+            btn.remove();
         });
     }
 
@@ -58,38 +59,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     startMusic();
 
-    // ======= Control del reproductor (SVG) =======
+    // ======= Control del reproductor tipo iOS (botón play/pausa) =======
     const playBtn = document.getElementById('btn-play');
     if (playBtn) {
-        const iconPlay = playBtn.querySelector('.icon-play');
-        const iconPause = playBtn.querySelector('.icon-pause');
-
         playBtn.addEventListener('click', () => {
             if (music.paused) {
                 music.play().then(() => {
-                    iconPlay.style.display = 'none';
-                    iconPause.style.display = 'block';
+                    playBtn.textContent = '⏸';
                 }).catch(err => {
                     console.log('No se pudo iniciar la música:', err);
                 });
             } else {
                 music.pause();
-                iconPlay.style.display = 'block';
-                iconPause.style.display = 'none';
+                playBtn.textContent = '▶';
             }
         });
 
         music.addEventListener('play', () => {
-            iconPlay.style.display = 'none';
-            iconPause.style.display = 'block';
+            playBtn.textContent = '⏸';
         });
 
         music.addEventListener('pause', () => {
-            iconPlay.style.display = 'block';
-            iconPause.style.display = 'none';
+            playBtn.textContent = '▶';
         });
     }
-
 
     // ======= Generador de invitaciones =======
     document.getElementById("generar-invitacion").addEventListener("click", async () => {
@@ -112,25 +105,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             const baseUrl = window.location.origin + '/index.html';
             const link = `${baseUrl}?inv=${invitacionId}`;
 
-            // Actualiza el enlace visible
             const linkElement = document.getElementById("link-personalizado");
             linkElement.href = link;
             linkElement.textContent = "Enlace de invitación personalizado";
             document.getElementById("invitacion-link").style.display = 'block';
 
-            // Copiar al portapapeles y esperar que termine
             await navigator.clipboard.writeText(link);
-
-            // Solo después de que se copie exitosamente mostramos la alerta
-            alert("Enlace copiado al portapapeles");
-
+            alert("Enlace copiado al portapeles");
         } catch (error) {
-            console.error("Error al guardar invitación o copiar enlace:", error);
+            console.error("Error al guardar invitación:", error);
             alert("Ocurrió un error al generar la invitación.");
         }
     });
-
-
 
     // ======= Cargar invitación existente =======
     const params = new URLSearchParams(window.location.search);
