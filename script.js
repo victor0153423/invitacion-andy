@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (document.getElementById('btn-play-music')) return;
         const btn = document.createElement('button');
         btn.id = 'btn-play-music';
-        btn.textContent = '🎵 Toca para activar música';
+        btn.textContent = 'Toca para activar música';
         btn.style.position = 'fixed';
         btn.style.bottom = '20px';
         btn.style.left = '50%';
