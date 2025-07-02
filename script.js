@@ -47,27 +47,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // ========== CARGAR INVITACIÓN EXISTENTE ==========
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('inv')) {
-        const invitacionId = params.get('inv');
-        try {
-            const doc = await db.collection('invitaciones').doc(invitacionId).get();
-            if (doc.exists) {
-                const data = doc.data();
-                document.getElementById("adultos").value = data.adultos || '';
-                document.getElementById("ninos").value = data.ninos || '';
+// ========== CARGAR INVITACIÓN EXISTENTE ==========
+const params = new URLSearchParams(window.location.search);
+if (params.has('inv')) {
+    const invitacionId = params.get('inv');
+    try {
+        const doc = await db.collection('invitaciones').doc(invitacionId).get();
+        if (doc.exists) {
+            const data = doc.data();
+            document.getElementById("adultos").value = data.adultos || '';
+            document.getElementById("ninos").value = data.ninos || '';
 
-                document.getElementById("adultos").readOnly = true;
-                document.getElementById("ninos").readOnly = true;
-                document.getElementById("generar-invitacion").style.display = 'none';
-            } else {
-                console.log("No existe invitación con ese ID");
-            }
-        } catch (error) {
-            console.error("Error al cargar invitación:", error);
+            document.getElementById("adultos").readOnly = true;
+            document.getElementById("ninos").readOnly = true;
+            document.getElementById("generar-invitacion").style.display = 'none';
+
+            // Aquí agregamos para mostrar el link personalizado con el invitacionId:
+            const baseUrl = window.location.origin + '/index.html';
+            const link = `${baseUrl}?inv=${invitacionId}`;
+            const linkElement = document.getElementById("link-personalizado");
+            linkElement.href = link;
+            linkElement.textContent = "Enlace de invitación personalizado";
+            document.getElementById("invitacion-link").style.display = 'block';
+        } else {
+            console.log("No existe invitación con ese ID");
         }
+    } catch (error) {
+        console.error("Error al cargar invitación:", error);
     }
+}
+
 
     // ========== ANIMACIÓN DE BURBUJAS ==========
     const bubbleContainer = document.createElement('div');
